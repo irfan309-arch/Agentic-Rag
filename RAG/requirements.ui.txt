@@ -1,0 +1,8 @@
+# requirements.ui.txt
+# Streamlit frontend only — does NOT include the RAG backend stack.
+# The UI talks to FastAPI over HTTP; it never imports torch, chromadb,
+# langchain, or any embedding/vector dependency.
+
+streamlit==1.40.0
+requests==2.32.3
+bcrypt==4.2.0

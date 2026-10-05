@@ -1,0 +1,80 @@
+# ---- Virtual environments ----
+.venv/
+venv/
+env/
+
+# ---- Python cache ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ---- Secrets — MUST NOT enter the image ----
+.env
+.env.*
+!.env.example
+
+# ---- Git ----
+.git/
+.gitignore
+
+# ---- Local databases — persist via Railway Volume, not the image ----
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ---- Local vector stores — persist via Railway Volume ----
+chroma_data/
+chroma_memory/
+chroma_rag/
+chroma*/
+
+# ---- Runtime data — persist via Railway Volume ----
+data/
+uploads/
+
+# ---- Build artifacts ----
+*.egg-info/
+dist/
+build/
+*.whl
+
+# ---- Test/tooling caches ----
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# ---- IDE / OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ---- Logs ----
+*.log
+
+# ---- Model files / ML artifacts ----
+*.joblib
+*.pkl
+*.pickle
+
+# ---- Temporary files ----
+*.tmp
+*.temp
+
+# ---- Docs / diagrams — bloat the image, slow Railway pulls ----
+*.pdf
+*.png
+*.jpg
+*.jpeg
+README.md
+
+# ---- Local dev only — do NOT ship to production containers ----
+docker-compose.yml
+start.sh
+Dockerfile
+evaluate_memory.py

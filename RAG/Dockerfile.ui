@@ -1,0 +1,39 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# UI-only dependencies — no torch, no chromadb, no langchain.
+# Image is ~200 MB instead of ~2 GB.
+COPY requirements.ui.txt .
+
+RUN pip install --upgrade pip && \
+    pip install -r requirements.ui.txt
+
+COPY . .
+
+# Streamlit writes a config file into the home directory on first
+# launch. Create a non-root user with a writable home for it.
+RUN useradd -m -u 1000 appuser && \
+    mkdir -p /home/appuser/.streamlit && \
+    chown -R appuser:appuser /app /home/appuser
+
+USER appuser
+
+EXPOSE 8501
+
+# Railway injects $PORT. Bind Streamlit to it, fall back to 8501 locally.
+# The two --server.enable* flags disable origin checks so Railway's
+# reverse proxy can complete the WebSocket handshake. Without them,
+# the page renders but stays non-interactive.
+CMD ["sh", "-c", "streamlit run app.py \
+    --server.port ${PORT:-8501} \
+    --server.address 0.0.0.0 \
+    --server.headless true \
+    --server.enableCORS false \
+    --server.enableXsrfProtection false \
+    --browser.gatherUsageStats false"]

@@ -1,0 +1,19 @@
+streamlit>=1.36
+python-dotenv>=1.0
+pypdf>=4.0
+langchain-core>=0.3
+langchain-text-splitters>=0.3
+langchain-huggingface>=0.1
+langchain-chroma>=0.1
+langchain-groq>=0.2
+sentence-transformers>=3.0
+fastapi
+uvicorn
+pydantic
+bcrypt>=4.1.0
+fastapi
+uvicorn[standard]
+streamlit
+python-multipart
+requests
+# keep your existing: streamlit, langchain, etc.

@@ -1,0 +1,39 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# Build tools are only needed for compiling wheels during pip install.
+# Install them, run pip, then purge — all in one layer.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+# CPU-only torch FIRST (keeps image ~2 GB smaller than the CUDA build),
+# then the rest of the requirements.
+RUN pip install --upgrade pip && \
+    pip install torch --index-url https://download.pytorch.org/whl/cpu && \
+    pip install -r requirements.txt && \
+    apt-get purge -y --auto-remove build-essential && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY . .
+
+# Consolidated data dir — mount ONE Railway Volume at /app/data
+RUN mkdir -p /app/data/documents \
+             /app/data/chroma_rag \
+             /app/data/chroma_memory
+
+# Documentation only. Railway injects $PORT at runtime.
+EXPOSE 8000
+
+# Bind to $PORT (Railway) or 8000 (local Docker).
+# --timeout-keep-alive matches Railway's edge LB idle timeout so
+# SSE streams aren't killed mid-token.
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1 --timeout-keep-alive 65"]

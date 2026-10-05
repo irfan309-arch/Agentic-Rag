@@ -1,0 +1,13 @@
+services:
+  rag-app:
+    build: .  # Dockerfile is in the same folder
+    ports:
+      - "8501:8501" # Streamlit UI
+      - "8000:8000" # FastAPI Endpoints
+    env_file:
+      - .env  # .env is in the same folder
+    volumes:
+      # Mount volumes relative to the RAG/ folder
+      - ./chat_history.db:/app/chat_history.db
+      - ./chroma_data:/app/chroma_data
+      - ./data:/app/data
