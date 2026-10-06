@@ -1,71 +1,25 @@
-# ---- Virtual environments ----
+# Virtual Environment
 .venv/
 venv/
 env/
 
-# ---- Python cache ----
+# Python cache
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
-*.pyd
 
-# ---- Secrets ----
+# Environment variables (secrets)
 .env
-.env.*
-!.env.example
 
-# ---- Local databases ----
-*.db
-*.db-wal
-*.db-shm
-*.db-journal
-*.sqlite
-*.sqlite3
-
-# ---- Local vector stores ----
+# Vector Databases & Local Data
 chroma_data/
 chroma_memory/
 chroma_rag/
-chroma*/
+*.db
 
-# ---- Runtime data ----
-data/
-uploads/
-
-# ---- Build artifacts ----
-*.egg-info/
-dist/
-build/
-*.whl
-
-# ---- Test/tooling caches ----
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.ipynb_checkpoints/
-
-# ---- IDE ----
+# VS Code
 .vscode/
-.idea/
 
-# ---- OS ----
+# OS files
 .DS_Store
 Thumbs.db
-
-# ---- Logs ----
-*.log
-
-# ---- Model files / ML artifacts ----
-*.joblib
-*.pkl
-*.pickle
-
-# ---- Temporary files ----
-*.tmp
-*.temp
-
-# ---- Docs / diagrams (large binaries) ----
-*.pdf
-*.png
-*.jpg
-*.jpeg
